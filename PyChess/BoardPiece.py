@@ -21,9 +21,11 @@ class BoardPiece():
             screen.blit(
                 image, [self.center[0] - (self.SIZE/2.45), self.center[1] - (self.SIZE/2.45)])
 
-    def drawValid(self, screen):
-        pygame.draw.circle(screen, (255, 0, 0), self.center, 10)
+    def drawValid(self, screen, color):
+        if color == 'RED':
+            pygame.draw.circle(screen, (255, 0, 0), self.center, 10)
+        elif color == 'BLUE':
+            pygame.draw.circle(screen, (0, 0, 255), self.center, 10)
 
     def drawPrev(self, screen):
-        pygame.draw.circle(screen, (0, 0, 255), self.center,
-                           27, 2)
+        pygame.draw.circle(screen, (0, 0, 255), self.center, 27, 2)

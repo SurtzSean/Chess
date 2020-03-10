@@ -11,8 +11,8 @@ GRAY = (211, 211, 211)
 MARGIN = 5
 
 gm = GameManger()
-gm.makePlayer('B', "Sean")
-gm.makePlayer('W', "Sean2")
+gm.makePlayer('B', "Sean", gm)
+gm.makePlayer('W', "Sean2", gm)
 grid = []
 for row in range(8):
     grid.append([])
@@ -41,6 +41,22 @@ gameBoard.table[7][7].occupiedBy = Pieces.rook('B', 7, 7)
 gameBoard.table[0][0].occupiedBy = Pieces.rook('W', 0, 0)
 gameBoard.table[0][7].occupiedBy = Pieces.rook('W', 0, 7)
 
+gameBoard.table[7][1].occupiedBy = Pieces.knight('B', 7, 1)
+gameBoard.table[7][6].occupiedBy = Pieces.knight('B', 7, 6)
+gameBoard.table[0][1].occupiedBy = Pieces.knight('W', 0, 1)
+gameBoard.table[0][6].occupiedBy = Pieces.knight('W', 0, 6)
+
+gameBoard.table[7][2].occupiedBy = Pieces.bishop('B', 7, 2)
+gameBoard.table[7][5].occupiedBy = Pieces.bishop('B', 7, 5)
+gameBoard.table[0][2].occupiedBy = Pieces.bishop('W', 0, 2)
+gameBoard.table[0][5].occupiedBy = Pieces.bishop('W', 0, 5)
+
+gameBoard.table[7][4].occupiedBy = Pieces.queen('B', 7, 4)
+gameBoard.table[0][4].occupiedBy = Pieces.queen('W', 0, 4)
+
+gameBoard.table[7][3].occupiedBy = Pieces.king('B', 7, 3)
+gameBoard.table[0][3].occupiedBy = Pieces.king('W', 0, 3)
+
 selected = None
 
 while not done:
@@ -54,11 +70,11 @@ while not done:
             for i in range(gameBoard.SIZE):
                 for j in range(gameBoard.SIZE):
                     if selected != None and gameBoard.table[i][j].area.collidepoint(pos) and gameBoard.table[i][j] in selected.getMoves(gameBoard):
-                        gm.movePiece(gameBoard, selected, i, j)
+                        gm.takeTurn(gameBoard, selected, i, j)
+                        print('test')
                         selected = None
                     elif gameBoard.table[i][j].area.collidepoint(pos):
                         selected = gameBoard.table[i][j].occupiedBy
-                        print(selected)
     gameBoard.drawBoard(screen, selected, gm)
     clock.tick(60)
     pygame.display.flip()

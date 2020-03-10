@@ -4,6 +4,7 @@ from Player import Player
 
 class GameManger:
     def __init__(self):
+        self.turn = None
         self.players = []
         self.curRow = None
         self.curCol = None
@@ -13,21 +14,27 @@ class GameManger:
         self.blackCaptured = []
         self.gameOver = False
 
-    def makePlayer(self, team, name):
-        self.players.append(Player(team, name))
-        self.manageTurn(self.players[0])
+    def makePlayer(self, team, name, gm):
+        self.players.append(Player(team, name, gm))
+        if len(self.players) == 2:
+            self.manageTurn()
 
-    def manageTurn(self, turn):
-        self.turn = turn
+    def takeTurn(self, gameBoard, selected, i, j):
+        for player in self.players:
+            if player.team == self.turn and selected.team == player.team:
+                player.movePiece(gameBoard, selected, i, j)
+                self.manageTurn()
+
+    def manageTurn(self):
+        if self.turn == None:
+            self.turn = 'B'
+        else:
+            if self.turn == 'B':
+                self.turn = 'W'
+            elif self.turn == 'W':
+                self.turn = 'B'
 
     def movePiece(self, board, selected, row, col):
-        if len(self.players) < 2:
-            print("need 2 players to play chess")
-            return
-        if(self.turn.team != selected.team):
-            print("You are " + self.turn.team +
-                  " but you are trying to move a " + selected.team + " at ", selected.row, ",", selected.col)
-            return
         self.curRow = row
         self.curCol = col
         self.prevRow = selected.row
@@ -38,12 +45,10 @@ class GameManger:
         selected.col = col
         if type(selected) == type(Pieces.pawn(None, None, None)):
             selected.firstMove = False
-        if self.turn == self.players[0]:
-            self.manageTurn(self.players[1])
+        if self.turn == 'W':
             self.players[0].setPrevCircle(
                 self.prevRow, self.prevCol, self.curRow, self.curCol)
         else:
-            self.manageTurn(self.players[0])
             self.players[1].setPrevCircle(
                 self.prevRow, self.prevCol, self.curRow, self.curCol)
         print("moved ", selected, 'to : ', row, ',', col)

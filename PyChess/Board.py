@@ -33,8 +33,10 @@ class Board(object):
                 self.table[row][col].drawPiece(screen)
         if selected != None:  # draw potential moves
             for move in selected.getMoves(self):
-                if(gm.turn.team == selected.team):
-                    move.drawValid(screen)
+                if(gm.turn == selected.team):
+                    move.drawValid(screen, 'RED')
+                elif(gm.turn != selected.team):
+                    move.drawValid(screen, 'BLUE')
         if gm.curRow != None and gm.curCol != None and gm.prevRow != None and gm.prevCol != None:
             self.drawPrev(
                 screen, self.table[gm.curRow][gm.curCol], self.table[gm.prevRow][gm.prevCol])
