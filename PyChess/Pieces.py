@@ -69,7 +69,7 @@ class rook(piece):
             validMoves.append(board.table[i][c])
             i += 1
         i = r - 1
-        while(i > 0):
+        while(i >= 0):
             if(board.table[i][c].occupiedBy != None):
                 if board.table[i][c].occupiedBy.team == self.team:
                     break
@@ -89,7 +89,7 @@ class rook(piece):
             validMoves.append(board.table[r][i])
             i += 1
         i = c - 1
-        while(i > 0):
+        while(i >= 0):
             if(board.table[r][i].occupiedBy != None):
                 if board.table[r][i].occupiedBy.team == self.team:
                     break
@@ -134,7 +134,7 @@ class knight(piece):
 
 class bishop(piece):
     def __init__(self, team, row, col):
-        super().__init__(5, team, row, col)
+        super().__init__(3, team, row, col)
         if self.team == "W":
             self.image = "w_bishop.png"
         else:
@@ -204,7 +204,7 @@ class bishop(piece):
 
 class queen(piece):
     def __init__(self, team, row, col):
-        super().__init__(5, team, row, col)
+        super().__init__(9, team, row, col)
         if self.team == "W":
             self.image = "w_queen.png"
         else:
@@ -276,7 +276,7 @@ class queen(piece):
             validMoves.append(board.table[i][c])
             i += 1
         i = r - 1
-        while(i > 0):
+        while(i >= 0):
             if(board.table[i][c].occupiedBy != None):
                 if board.table[i][c].occupiedBy.team == self.team:
                     break
@@ -296,7 +296,7 @@ class queen(piece):
             validMoves.append(board.table[r][i])
             i += 1
         i = c - 1
-        while(i > 0):
+        while(i >= 0):
             if(board.table[r][i].occupiedBy != None):
                 if board.table[r][i].occupiedBy.team == self.team:
                     break
@@ -308,13 +308,13 @@ class queen(piece):
         return validMoves
 
     def __str__(self):
-        word = self.team + "bishop at " + str(self.row) + "," + str(self.col)
+        word = self.team + " bishop at " + str(self.row) + "," + str(self.col)
         return word
 
 
 class king(piece):
     def __init__(self, team, row, col):
-        super().__init__(5, team, row, col)
+        super().__init__(4, team, row, col)
         if self.team == "W":
             self.image = "w_king.png"
         else:
@@ -332,3 +332,7 @@ class king(piece):
                     else:
                         validMoves.append(board.table[r+i][j+c])
         return validMoves
+
+    def __str__(self):
+        word = self.team + " king at " + str(self.row) + "," + str(self.col)
+        return word

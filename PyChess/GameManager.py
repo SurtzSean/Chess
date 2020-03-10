@@ -1,4 +1,5 @@
 import Pieces
+import pygame
 from Player import Player
 
 
@@ -52,3 +53,47 @@ class GameManger:
             self.players[1].setPrevCircle(
                 self.prevRow, self.prevCol, self.curRow, self.curCol)
         print("moved ", selected, 'to : ', row, ',', col)
+
+    def endGame(self, player, board):
+        self.prevRow = self.curRow = self.prevCol = self.curCol = None
+        self.gameOver = True
+        for player in self.players:
+            player.clearCaptured()
+        print(player.name + " of the has won!")
+        self.clearBoard(board)
+        self.setBoard(board)
+        self.gameOver = False
+        self.turn = 'B'
+
+    def setBoard(self, gameBoard):
+        for j in range(8):
+            gameBoard.table[1][j].occupiedBy = Pieces.pawn("W", 1, j)
+
+        for j in range(8):
+            gameBoard.table[6][j].occupiedBy = Pieces.pawn("B", 6, j)
+
+        gameBoard.table[7][0].occupiedBy = Pieces.rook('B', 7, 0)
+        gameBoard.table[7][7].occupiedBy = Pieces.rook('B', 7, 7)
+        gameBoard.table[0][0].occupiedBy = Pieces.rook('W', 0, 0)
+        gameBoard.table[0][7].occupiedBy = Pieces.rook('W', 0, 7)
+
+        gameBoard.table[7][1].occupiedBy = Pieces.knight('B', 7, 1)
+        gameBoard.table[7][6].occupiedBy = Pieces.knight('B', 7, 6)
+        gameBoard.table[0][1].occupiedBy = Pieces.knight('W', 0, 1)
+        gameBoard.table[0][6].occupiedBy = Pieces.knight('W', 0, 6)
+
+        gameBoard.table[7][2].occupiedBy = Pieces.bishop('B', 7, 2)
+        gameBoard.table[7][5].occupiedBy = Pieces.bishop('B', 7, 5)
+        gameBoard.table[0][2].occupiedBy = Pieces.bishop('W', 0, 2)
+        gameBoard.table[0][5].occupiedBy = Pieces.bishop('W', 0, 5)
+
+        gameBoard.table[7][4].occupiedBy = Pieces.queen('B', 7, 4)
+        gameBoard.table[0][4].occupiedBy = Pieces.queen('W', 0, 4)
+
+        gameBoard.table[7][3].occupiedBy = Pieces.king('B', 7, 3)
+        gameBoard.table[0][3].occupiedBy = Pieces.king('W', 0, 3)
+
+    def clearBoard(self, board):
+        for i in range(len(board.table)):
+            for j in range(len(board.table[0])):
+                board.table[i][j].occupiedBy = None
