@@ -4,7 +4,7 @@ from Player import Player
 
 
 class GameManger:
-    def __init__(self):
+    def __init__(self, screen):
         self.turn = None
         self.players = []
         self.curRow = None
@@ -14,6 +14,9 @@ class GameManger:
         self.whiteCaptured = []
         self.blackCaptured = []
         self.gameOver = False
+        self.screen = screen
+        self.winner = None
+        self.tick = 0
 
     def makePlayer(self, team, name, gm):
         self.players.append(Player(team, name, gm))
@@ -56,14 +59,12 @@ class GameManger:
 
     def endGame(self, player, board):
         self.prevRow = self.curRow = self.prevCol = self.curCol = None
+        self.winner = player
         self.gameOver = True
         for player in self.players:
             player.clearCaptured()
-        print(player.name + " of the has won!")
-        self.clearBoard(board)
-        self.setBoard(board)
-        self.gameOver = False
-        self.turn = 'B'
+        pygame.display.update()
+        self.tick = 0
 
     def setBoard(self, gameBoard):
         for j in range(8):
@@ -97,3 +98,16 @@ class GameManger:
         for i in range(len(board.table)):
             for j in range(len(board.table[0])):
                 board.table[i][j].occupiedBy = None
+
+    def showWinner(self):
+        font = pygame.font.Font('freesansbold.ttf', 55)
+        wTeam = 'Nobody'
+        if self.winner.team == 'B':
+            wTeam = 'Black'
+        elif self.winner.team == 'W':
+            wTeam = 'White'
+        winText = wTeam + " has won!"
+        textSurface = font.render(winText, True, (255, 0, 0))
+        textRect = textSurface.get_rect()
+        textRect.center = ((500/2), (500/2))
+        self.screen.blit(textSurface, textRect)
