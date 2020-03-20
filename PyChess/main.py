@@ -3,6 +3,7 @@ from Board import Board
 import Pieces
 from GameManager import GameManger
 from Player import Player
+from AI import AI
 
 pygame.init()
 
@@ -52,6 +53,11 @@ def gameLoop():
     gameBoard = setup(gm)
     done = False
     selected = None
+    AIPlayer = None
+    for player in gm.players:
+        if player.name == "AI":
+            AIPlayer = player
+    AIP = AI(None, gameBoard, AIPlayer)
     while not done:
         if gm.gameOver:
             gm.tick += 1
@@ -61,6 +67,9 @@ def gameLoop():
             else:
                 gm.showWinner()
         else:
+            if AIP != None and AIP.player.team == gm.turn:
+                AIP.move()
+                gm.manageTurn()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     done = True
@@ -72,7 +81,6 @@ def gameLoop():
                         for j in range(gameBoard.SIZE):
                             if selected != None and gameBoard.table[i][j].area.collidepoint(pos) and gameBoard.table[i][j] in selected.getMoves(gameBoard):
                                 gm.takeTurn(gameBoard, selected, i, j)
-                                print('test')
                                 selected = None
                             elif gameBoard.table[i][j].area.collidepoint(pos):
                                 selected = gameBoard.table[i][j].occupiedBy
@@ -83,8 +91,9 @@ def gameLoop():
 
 
 def setup(gm):
-    gm.makePlayer('B', "Sean", gm)
-    gm.makePlayer('W', "Sean2", gm)
+    gm.makePlayer('B', "P1", gm)
+    gm.makePlayer('W', "AI", gm)
+
     grid = []
     for row in range(8):
         grid.append([])

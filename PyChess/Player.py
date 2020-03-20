@@ -8,6 +8,7 @@ class Player:
         self.gm = gm
         self.captured = []
         self.score = 0
+        self.pieces = []
 
     def setPrevCircle(self, oldRow, oldCol, newRow, newCol):
         self.oldRow = oldRow
@@ -18,6 +19,8 @@ class Player:
     def movePiece(self, board, selected, row, col):
         if board.table[row][col].occupiedBy != None:
             self.captured.append(board.table[row][col].occupiedBy)
+            self.gm.removePiece(board.table[row][col].occupiedBy)
+
         self.gm.movePiece(board, selected, row, col)
         if any(isinstance(piece, Pieces.king) for piece in self.captured):
             print("Game over")
