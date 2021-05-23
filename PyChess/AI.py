@@ -16,8 +16,7 @@ class AI:
         self.player.movePiece(self.board, piece, move.row, move.col)
 
     def pickMove(self):
-        import math
-
+        pass
 
 def minimax(curDepth, nodeIndex,
             maxTurn, scores,
